@@ -16,22 +16,28 @@ services:
       DATABASE_PASSWORD: example
       DATABASE_NAME: flaskdb
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./app:/app
 
   db:
     image: mysql:8.0
-    container_name: mysql-db
+    restart: always
+    container_name: db
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: flaskdb
-      MYSQL_USER: flaskuser
-      MYSQL_PASSWORD: flaskpassword
+      MYSQL_USER: user
+      MYSQL_PASSWORD: pass
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
 
 volumes:
   db_data:

@@ -1,9 +1,10 @@
 import pymysql
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 import os
-
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import create_engine
 db = SQLAlchemy()
+
 pymysql.install_as_MySQLdb()
 
 
@@ -17,13 +18,23 @@ def create_app():
     port = os.getenv("DATABASE_PORT")
     database_name = os.getenv("DATABASE_NAME")
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://" + \
+    app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://" + \
         username+":"+password+"@"+host+":"+port+"/"+database_name
+
+    print(app.config["SQLALCHEMY_DATABASE_URI"])
 
     db.init_app(app)
 
-    # create tables
+    try:
+        engine = create_engine(app.config["SQLALCHEMY_DATABASE_URI"])
+        connection = engine.connect()
+        print("Database connection successful!")
+        connection.close()
+    except Exception as e:
+        print("Database connection failed:", str(e))
+
     with app.app_context():
+        from .models import User
         db.create_all()
 
     from .routers import main
