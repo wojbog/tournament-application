@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f9;
+            }
+            header {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            header h1 {
+                margin: 0;
+            }
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-weight: bold;
+            }
+            nav ul li a:hover {
+                text-decoration: underline;
+            }
+            main {
+                padding: 20px;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            table,
+            th,
+            td {
+                border: 1px solid #ddd;
+            }
+            th,
+            td {
+                padding: 10px;
+                text-align: left;
+            }
+            th {
+                background-color: #007bff;
+                color: white;
+            }
+            footer {
+                background-color: #333333;
+                color: white;
+                text-align: center;
+                padding: 10px 20px;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            .btn {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 15px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                text-decoration: none;
+                margin: 0 10px;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            .actions {
+                display: flex;
+                justify-content: flex-end;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Tournament System</h1>
+            <nav>
+                <ul>
+                    <li><a class="btn" href="logout">Logout</a></li>
+                    <li>
+                        <a class="btn" href="tournament">Add Tournament</a>
+                    </li>
+                    <li>
+                        <a class="btn" href="/my_tournaments">My Tournaments</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="container">
+            <h2>Welcome to the Tournament Dashboard</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Discipline</th>
+                        <th>Location</th>
+                        <th>Limit of Participants</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if tournaments %} {% for tournament in tournaments %}
+                    <tr>
+                        <td>{{ tournament.name }}</td>
+                        <td>{{ tournament.date }}</td>
+                        <td>{{ tournament.time }}</td>
+                        <td>{{ tournament.discipline }}</td>
+                        <td>{{ tournament.location }}</td>
+                        <td>{{ tournament.limit_of_participants }}</td>
+                    </tr>
+                    {% endfor %} {% else %}
+                    <tr>
+                        <td colspan="6" style="text-align: center">
+                            No tournaments available
+                        </td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Tournament System. All rights reserved.</p>
+        </footer>
+    </body>
+</html>

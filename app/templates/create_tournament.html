@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Create Tournament</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f9;
+            }
+            header {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            header h1 {
+                margin: 0;
+            }
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-weight: bold;
+            }
+            nav ul li a:hover {
+                text-decoration: underline;
+            }
+            main {
+                padding: 20px;
+            }
+            .container {
+                max-width: 600px;
+                margin: 0 auto;
+                background: white;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+            h2 {
+                text-align: center;
+                color: #333;
+            }
+            form label {
+                display: block;
+                margin: 10px 0 5px;
+                font-weight: bold;
+            }
+            form input,
+            form select {
+                width: 99%;
+                padding: 10px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+                border-radius: 4px;
+            }
+            form button {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+            form button:hover {
+                background-color: #0056b3;
+            }
+            footer {
+                background-color: #333333;
+                color: white;
+                text-align: center;
+                padding: 10px 20px;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Tournament System</h1>
+            <nav>
+                <ul>
+                    <li>
+                        <a class="btn" href="/my_tournaments">My Tournaments</a>
+                    </li>
+                    <li><a href="dashboard">Tournaments</a></li>
+                    <li><a href="tournament">Add Tournament</a></li>
+                    <li><a href="logout">Logout</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="container">
+            <h2>Create Tournament</h2>
+            <form action="tournament" method="POST">
+                <label for="name">Tournament Name:</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter tournament name"
+                    required
+                />
+
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required />
+
+                <label for="time">Time:</label>
+                <input type="time" id="time" name="time" required />
+
+                <label for="limit_of_participants"
+                    >Limit of Participants:</label
+                >
+                <input
+                    type="number"
+                    id="limit_of_participants"
+                    name="limit_of_participants"
+                    placeholder="Enter max participants"
+                    min="1"
+                    required
+                />
+
+                <label for="discipline">Discipline:</label>
+                <select id="discipline" name="discipline" required>
+                    <option value="">Select a discipline</option>
+                    <option value="Football">Football</option>
+                    <option value="Basketball">Basketball</option>
+                    <option value="Volleyball">Volleyball</option>
+                    <option value="Tennis">Tennis</option>
+                </select>
+
+                <label for="location">Location:</label>
+                <input
+                    type="text"
+                    id="location"
+                    name="location"
+                    placeholder="Enter tournament location"
+                    required
+                />
+
+                <button type="submit">Create Tournament</button>
+            </form>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Tournament System. All rights reserved.</p>
+        </footer>
+    </body>
+</html>

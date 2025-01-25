@@ -10,11 +10,13 @@ services:
     environment:
       FLASK_ENV: development
       FLASK_APP: app.py
+      FLASK_DEBUG: 1
       DATABASE_HOST: db
       DATABASE_PORT: 3306
       DATABASE_USER: root
       DATABASE_PASSWORD: example
       DATABASE_NAME: flaskdb
+      SECRET_KEY: "secret"
     depends_on:
       db:
         condition: service_healthy

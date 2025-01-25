@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Tournament System</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f4f9;
+            }
+            header {
+                background-color: #007bff;
+                color: white;
+                padding: 10px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            header h1 {
+                margin: 0;
+            }
+            nav ul {
+                list-style-type: none;
+                margin: 0;
+                padding: 0;
+                display: flex;
+            }
+            nav ul li {
+                margin: 0 10px;
+            }
+            nav ul li a {
+                text-decoration: none;
+                color: white;
+                font-weight: bold;
+            }
+            nav ul li a:hover {
+                text-decoration: underline;
+            }
+            main {
+                padding: 20px;
+            }
+            footer {
+                background-color: #333333;
+                color: white;
+                text-align: center;
+                padding: 10px 20px;
+                position: fixed;
+                bottom: 0;
+                width: 100%;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+            table,
+            th,
+            td {
+                border: 1px solid #ddd;
+            }
+            th,
+            td {
+                padding: 12px;
+                text-align: left;
+            }
+            th {
+                background-color: #007bff;
+                color: white;
+            }
+            td {
+                background-color: white;
+            }
+            .status-upcoming {
+                color: #28a745;
+            }
+            .status-ongoing {
+                color: #ffc107;
+            }
+            .status-completed {
+                color: #dc3545;
+            }
+        </style>
+    </head>
+    <body>
+        <header>
+            <h1>Tournament System</h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="app/tournaments">Tournaments</a></li>
+                    <li><a href="auth/register">Register</a></li>
+                    <li><a href="auth/login">Login</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <main class="container">
+            <!-- Content specific to each page will go here -->
+            <h2>Upcoming Tournaments</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Tournament Name</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tournament in tournaments %}
+                    <tr>
+                        <td>{{ tournament.name }}</td>
+                        <td>{{ tournament.date }}</td>
+                        <td class="status-{{ tournament.status|lower }}">
+                            {{ tournament.status }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 Tournament System. All rights reserved.</p>
+        </footer>
+    </body>
+</html>

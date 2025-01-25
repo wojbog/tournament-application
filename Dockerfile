@@ -18,4 +18,4 @@ EXPOSE 5000
 
 # Set the command to run the Flask app
 # Assumes your app's entry point is app.py and uses the default Flask port
-CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
+CMD ["flask", "--debug", "run", "--host=0.0.0.0", "--port=5000"]
