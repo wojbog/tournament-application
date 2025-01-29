@@ -25,6 +25,15 @@ class Discipline(db.Model):
 
 # create tournament model: id, name, date, discipline as foreign key , location, max_participants
 class Tournament(db.Model):
+    def __init__(self, id_tournament, name, date, location, discipline, status):
+        self.id_tournament = id_tournament
+        self.name = name
+        self.date_only = date.strftime('%Y-%m-%d')
+        self.time = date.strftime('%H:%M')
+        self.location = location
+        self.status = status
+        self.discipline = discipline
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), unique=False, nullable=False)
     date = db.Column(db.DateTime, nullable=False)
@@ -47,3 +56,14 @@ class Result(db.Model):
 
     def __repr__(self):
         return f"<Result {self.result}>"
+
+
+class Player():
+    def __init__(self, id_player, username, rank, score):
+        self.id_player = id_player
+        self.username = username
+        self.rank = rank
+        self.score = score
+
+    def __repr__(self):
+        return f"<Player {self.name}>"

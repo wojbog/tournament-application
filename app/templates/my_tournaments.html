@@ -3,8 +3,60 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Create Tournament</title>
+        <title>My Tournaments</title>
         <style>
+            .messages {
+                padding: 15px;
+                margin: 10px 0;
+                border-radius: 8px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+                opacity: 1;
+                transition: opacity 1s ease-in-out;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .messages.success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .messages.error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+
+            .messages.warning {
+                background-color: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeeba;
+            }
+
+            .messages.info {
+                background-color: #d1ecf1;
+                color: #0c5460;
+                border: 1px solid #bee5eb;
+            }
+            .messages .close-btn {
+                background: none;
+                border: none;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                color: inherit;
+                margin-left: 15px;
+            }
+
+            .messages .close-btn:hover {
+                opacity: 0.7;
+            }
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -43,40 +95,27 @@
                 padding: 20px;
             }
             .container {
-                max-width: 600px;
+                max-width: 1200px;
                 margin: 0 auto;
-                background: white;
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             }
-            h2 {
-                text-align: center;
-                color: #333;
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
             }
-            form label {
-                display: block;
-                margin: 10px 0 5px;
-                font-weight: bold;
-            }
-            form input,
-            form select {
-                width: 99%;
-                padding: 10px;
-                margin-bottom: 15px;
+            table,
+            th,
+            td {
                 border: 1px solid #ddd;
-                border-radius: 4px;
             }
-            form button {
+            th,
+            td {
+                padding: 10px;
+                text-align: left;
+            }
+            th {
                 background-color: #007bff;
                 color: white;
-                padding: 10px 20px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-            form button:hover {
-                background-color: #0056b3;
             }
             footer {
                 background-color: #333333;
@@ -120,9 +159,7 @@
                         <a class="btn" href="/app/dashboard">Tournaments</a>
                     </li>
                     <li>
-                        <a class="btn" href="/app/my_tournaments"
-                            >My Tournaments</a
-                        >
+                        <a class="btn" href="/app/tournament">Add Tournament</a>
                     </li>
                     <li>
                         <a class="btn" href="/app/participation"
@@ -133,68 +170,54 @@
                 </ul>
             </nav>
         </header>
-
-        <main class="container">
-            <h2>Create Tournament</h2>
-            <form action="tournament" method="POST">
-                <label for="name">Tournament Name:</label>
-                <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    placeholder="Enter tournament name"
-                    required
-                />
-
-                <label for="date">Date:</label>
-                <input type="date" id="date" name="date" required />
-
-                <label for="time">Time:</label>
-                <input type="time" id="time" name="time" required />
-
-                <label for="limit_of_participants"
-                    >Limit of Participants:</label
-                >
-                <input
-                    type="number"
-                    id="max_participants"
-                    name="max_participants"
-                    placeholder="Enter max participants"
-                    min="1"
-                    required
-                />
-
-                <label for="discipline">Discipline:</label>
-                <select id="discipline" name="discipline" required>
-                    <option value="">Select a discipline</option>
-                    <option value="Football">Football</option>
-                    <option value="Basketball">Basketball</option>
-                    <option value="Volleyball">Volleyball</option>
-                    <option value="Tennis">Tennis</option>
-                </select>
-
-                <label for="location">Location:</label>
-                <input
-                    type="text"
-                    id="location"
-                    name="location"
-                    placeholder="Enter tournament location"
-                    required
-                />
-
-                <button type="submit">Create Tournament</button>
-            </form>
-        </main>
         <div class="messages_box">
             {% with messages = get_flashed_messages(with_categories=true) %} {%
             if messages %} {% for category, message in messages %}
             <div class="messages {{ category }}">{{ message }}</div>
             {% endfor %} {% endif %} {% endwith %}
         </div>
+        <main class="container">
+            <h2>My Tournaments</h2>
 
-        <footer>
-            <p>&copy; 2025 Tournament System. All rights reserved.</p>
-        </footer>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Discipline</th>
+                        <th>Location</th>
+                        <th>Action</th>
+                        <th>Results</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tournament in tournaments %}
+                    <tr>
+                        <td>{{ tournament.name }}</td>
+                        <td>{{ tournament.date_only }}</td>
+                        <td>{{ tournament.time }}</td>
+                        <td>{{ tournament.discipline }}</td>
+                        <td>{{ tournament.location }}</td>
+                        <td>
+                            <a
+                                class="btn"
+                                href="/app/play/{{ tournament.id_tournament }}"
+                                >play</a
+                            >
+                        </td>
+                        <td>
+                            <a
+                                class="btn"
+                                href="/app/leaderboard/{{ tournament.id_tournament }}"
+                                >Show details</a
+                            >
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </main>
         <script>
             setTimeout(function () {
                 let messages = document.querySelectorAll(".messages");

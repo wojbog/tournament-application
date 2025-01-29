@@ -86,6 +86,28 @@
             .status-completed {
                 color: #dc3545;
             }
+            .btn {
+                background-color: #007bff;
+                color: white;
+                padding: 5px 10px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 14px;
+            }
+            .btn:hover {
+                background-color: #0056b3;
+            }
+            .actions {
+                display: flex;
+                justify-content: flex-end;
+            }
+            .messages_box {
+                margin: 10px;
+                height: 70px;
+            }
         </style>
     </head>
     <body>
@@ -93,10 +115,9 @@
             <h1>Tournament System</h1>
             <nav>
                 <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="app/tournaments">Tournaments</a></li>
-                    <li><a href="auth/register">Register</a></li>
-                    <li><a href="auth/login">Login</a></li>
+                    <li><a class="btn" href="/">Home</a></li>
+                    <li><a class="btn" href="auth/register">Register</a></li>
+                    <li><a class="btn" href="auth/login">Login</a></li>
                 </ul>
             </nav>
         </header>

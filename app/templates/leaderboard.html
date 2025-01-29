@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{ tournament.name }} - Leaderboard</title>
+        <style>
+            body {
+                font-family: "Comic Sans MS", cursive, sans-serif;
+                background-color: #fef2e4;
+                text-align: center;
+                padding: 20px;
+            }
+            h1 {
+                color: #ff9800;
+                text-shadow: 2px 2px 4px #000000;
+            }
+            .leaderboard {
+                max-width: 600px;
+                margin: 20px auto;
+                background: #fff3cd;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 15px;
+            }
+            th,
+            td {
+                padding: 10px;
+                border: 2px solid #ff9800;
+            }
+            th {
+                background-color: #ffeb3b;
+                font-size: 18px;
+            }
+            tr:nth-child(even) {
+                background-color: #fff9c4;
+            }
+            .gold {
+                background: gold;
+                font-weight: bold;
+                font-size: 20px;
+            }
+            .silver {
+                background: silver;
+                font-weight: bold;
+            }
+            .bronze {
+                background: #cd7f32;
+                font-weight: bold;
+            }
+            .last-place {
+                background: #e57373;
+                color: white;
+                font-weight: bold;
+            }
+            .trophy {
+                font-size: 25px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>🏆 {{ tournament.name }} - Ultimate Leaderboard! 🏆</h1>
+
+        <div class="leaderboard">
+            <h2>🎉 Who’s Winning? 🎉</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Username</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for player in leaderboard %}
+                    <tr
+                        class="{% if loop.index == 1 %}gold{% elif loop.index == 2 %}silver{% elif loop.index == 3 %}bronze{% elif loop.last %}last-place{% endif %}"
+                    >
+                        <td>
+                            {% if loop.index == 1 %} 🥇 {% elif loop.index == 2
+                            %} 🥈 {% elif loop.index == 3 %} 🥉 {% else %} {{
+                            loop.index }} {% endif %}
+                        </td>
+                        <td>{{ player.username }}</td>
+                        <td>{{ player.score }} ✨</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <p>
+                💡 Pro Tip: If you're at the bottom, at least you're not alone!
+                😆
+            </p>
+        </div>
+    </body>
+</html>

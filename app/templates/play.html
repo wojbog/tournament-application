@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Spinning Wheel of Fortune</title>
+        <style>
+            body {
+                font-family: "Comic Sans MS", cursive, sans-serif;
+                text-align: center;
+                background-color: #222;
+                color: white;
+            }
+            h1 {
+                font-size: 2.5rem;
+                color: #ffd700;
+                text-shadow: 2px 2px 10px #000;
+            }
+            .wheel-container {
+                position: relative;
+                width: 300px;
+                height: 300px;
+                margin: 50px auto;
+            }
+            .wheel {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                border: 5px solid #fff;
+                position: absolute;
+                animation: spin 5s linear infinite;
+            }
+            @keyframes spin {
+                from {
+                    transform: rotate(0deg);
+                }
+                to {
+                    transform: rotate(360deg);
+                }
+            }
+            .arrow {
+                position: absolute;
+                top: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 0;
+                height: 0;
+                border-left: 15px solid transparent;
+                border-right: 15px solid transparent;
+                border-bottom: 30px solid red;
+            }
+            .button {
+                font-size: 1.5rem;
+                padding: 10px 20px;
+                margin-top: 20px;
+                background: #ffd700;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                transition: 0.3s;
+            }
+            .button:hover {
+                background: #ffcc00;
+            }
+            #winner {
+                font-size: 2rem;
+                margin-top: 20px;
+                display: none;
+                padding: 15px;
+                background-color: #ffd700;
+                color: black;
+                border-radius: 10px;
+                animation: winnerFlash 1s infinite alternate;
+            }
+            @keyframes winnerFlash {
+                0% {
+                    transform: scale(1);
+                }
+                100% {
+                    transform: scale(1.1);
+                }
+            }
+            .wheel-canvas {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>🎡 The tournament in action 🎡</h1>
+
+        <div class="wheel-container">
+            <div class="arrow"></div>
+            <canvas id="wheelCanvas" class="wheel-canvas"></canvas>
+        </div>
+
+        <button class="button" onclick="stopWheel()">Stop the Wheel! 🎰</button>
+
+        <h2 id="winner">
+            🎉 The tournament ended. See the results :)
+            <span id="winner-name"></span> 🎉
+        </h2>
+
+        <script>
+            const canvas = document.getElementById("wheelCanvas");
+            const ctx = canvas.getContext("2d");
+            const wheelSegments = ["", "", "", "", "", "", "", ""];
+            const colors = [
+                "#FF5733",
+                "#33FF57",
+                "#3357FF",
+                "#FF33A8",
+                "#F4D03F",
+                "#8E44AD",
+                "#2ECC71",
+                "#E74C3C",
+            ];
+            let isSpinning = true;
+            let currentAngle = 0;
+
+            canvas.width = 300;
+            canvas.height = 300;
+
+            function drawWheel() {
+                const radius = canvas.width / 2;
+                const segmentAngle = (2 * Math.PI) / wheelSegments.length;
+
+                for (let i = 0; i < wheelSegments.length; i++) {
+                    ctx.beginPath();
+                    ctx.moveTo(radius, radius);
+                    ctx.arc(
+                        radius,
+                        radius,
+                        radius,
+                        i * segmentAngle,
+                        (i + 1) * segmentAngle
+                    );
+                    ctx.closePath();
+                    ctx.fillStyle = colors[i % colors.length];
+                    ctx.fill();
+                    ctx.strokeStyle = "#fff";
+                    ctx.lineWidth = 2;
+                    ctx.stroke();
+
+                    // Text
+                    ctx.save();
+                    ctx.translate(radius, radius);
+                    ctx.rotate(i * segmentAngle + segmentAngle / 2);
+                    ctx.fillStyle = "white";
+                    ctx.font = "16px Arial";
+                    ctx.textAlign = "right";
+                    ctx.fillText(wheelSegments[i], radius - 10, 10);
+                    ctx.restore();
+                }
+            }
+
+            function spinWheel() {
+                if (isSpinning) {
+                    currentAngle += 5;
+                    canvas.style.transform = `rotate(${currentAngle}deg)`;
+                    requestAnimationFrame(spinWheel);
+                }
+            }
+
+            function stopWheel() {
+                isSpinning = false;
+                let winnerIndex = Math.floor(
+                    Math.random() * wheelSegments.length
+                );
+                document.getElementById("winner-name").innerText =
+                    wheelSegments[winnerIndex];
+                document.getElementById("winner").style.display = "block";
+
+                // Redirect to dashboard after 3 seconds
+                setTimeout(() => {
+                    window.location.href = "/app/my_tournaments";
+                }, 5000);
+            }
+
+            drawWheel();
+            spinWheel();
+        </script>
+    </body>
+</html>

@@ -5,6 +5,58 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Dashboard</title>
         <style>
+            .messages {
+                padding: 15px;
+                margin: 10px 0;
+                border-radius: 8px;
+                font-weight: bold;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                position: relative;
+                opacity: 1;
+                transition: opacity 1s ease-in-out;
+                max-width: 600px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .messages.success {
+                background-color: #d4edda;
+                color: #155724;
+                border: 1px solid #c3e6cb;
+            }
+
+            .messages.error {
+                background-color: #f8d7da;
+                color: #721c24;
+                border: 1px solid #f5c6cb;
+            }
+
+            .messages.warning {
+                background-color: #fff3cd;
+                color: #856404;
+                border: 1px solid #ffeeba;
+            }
+
+            .messages.info {
+                background-color: #d1ecf1;
+                color: #0c5460;
+                border: 1px solid #bee5eb;
+            }
+            .messages .close-btn {
+                background: none;
+                border: none;
+                font-size: 18px;
+                font-weight: bold;
+                cursor: pointer;
+                color: inherit;
+                margin-left: 15px;
+            }
+
+            .messages .close-btn:hover {
+                opacity: 0.7;
+            }
             body {
                 font-family: Arial, sans-serif;
                 margin: 0;
@@ -77,12 +129,13 @@
             .btn {
                 background-color: #007bff;
                 color: white;
-                padding: 10px 15px;
+                padding: 5px 10px;
                 border: none;
                 border-radius: 4px;
                 cursor: pointer;
                 text-decoration: none;
-                margin: 0 10px;
+                display: inline-block;
+                font-size: 14px;
             }
             .btn:hover {
                 background-color: #0056b3;
@@ -91,6 +144,10 @@
                 display: flex;
                 justify-content: flex-end;
             }
+            .messages_box {
+                margin: 10px;
+                height: 70px;
+            }
         </style>
     </head>
     <body>
@@ -98,17 +155,29 @@
             <h1>Tournament System</h1>
             <nav>
                 <ul>
-                    <li><a class="btn" href="logout">Logout</a></li>
                     <li>
-                        <a class="btn" href="tournament">Add Tournament</a>
+                        <a class="btn" href="/app/tournament">Add Tournament</a>
                     </li>
                     <li>
-                        <a class="btn" href="/my_tournaments">My Tournaments</a>
+                        <a class="btn" href="/app/my_tournaments"
+                            >My Tournaments</a
+                        >
                     </li>
+                    <li>
+                        <a class="btn" href="/app/participation"
+                            >Participation</a
+                        >
+                    </li>
+                    <li><a class="btn" href="/app/logout">Logout</a></li>
                 </ul>
             </nav>
         </header>
-
+        <div class="messages_box">
+            {% with messages = get_flashed_messages(with_categories=true) %} {%
+            if messages %} {% for category, message in messages %}
+            <div class="messages {{ category }}">{{ message }}</div>
+            {% endfor %} {% endif %} {% endwith %}
+        </div>
         <main class="container">
             <h2>Welcome to the Tournament Dashboard</h2>
             <table>
@@ -119,22 +188,30 @@
                         <th>Time</th>
                         <th>Discipline</th>
                         <th>Location</th>
-                        <th>Limit of Participants</th>
+                        <th>status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% if tournaments %} {% for tournament in tournaments %}
                     <tr>
                         <td>{{ tournament.name }}</td>
-                        <td>{{ tournament.date }}</td>
+                        <td>{{ tournament.date_only }}</td>
                         <td>{{ tournament.time }}</td>
                         <td>{{ tournament.discipline }}</td>
                         <td>{{ tournament.location }}</td>
-                        <td>{{ tournament.limit_of_participants }}</td>
+                        <td>{{ tournament.status }}</td>
+                        <td>
+                            <a
+                                class="btn"
+                                href="/app/apply/{{ tournament.id_tournament }}"
+                                >Apply</a
+                            >
+                        </td>
                     </tr>
                     {% endfor %} {% else %}
                     <tr>
-                        <td colspan="6" style="text-align: center">
+                        <td colspan="7" style="text-align: center">
                             No tournaments available
                         </td>
                     </tr>
@@ -147,4 +224,14 @@
             <p>&copy; 2025 Tournament System. All rights reserved.</p>
         </footer>
     </body>
+    <script>
+        setTimeout(function () {
+            let messages = document.querySelectorAll(".messages");
+            messages.forEach(function (message) {
+                message.style.transition = "opacity 1s";
+                message.style.opacity = "0";
+                setTimeout(() => message.remove(), 1000);
+            });
+        }, 5000);
+    </script>
 </html>
